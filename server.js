@@ -8,9 +8,14 @@ const compression = require('compression');
 const app = express();
 
 app.use(express.json());
-app.use('/', routes);
 app.use(helmet());
 app.use(compression());
+app.use('/', routes);
+
+app.route('/')
+  .get(function (res) {
+    res.sendFile(process.cwd() + '/index.html');
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port);
