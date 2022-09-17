@@ -14,7 +14,7 @@ app.use('/', routes);
 
 app.route('/')
     .get(function (res) {
-        res.sendFile(process.cwd() + '/index.html');
+        res.sendfile(process.cwd() + '/index.html');
     });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
