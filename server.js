@@ -13,8 +13,8 @@ app.use(compression());
 app.use('/', routes);
 
 app.route('/')
-    .get(function (res) {
-        res.sendfile(process.cwd() + '/index.html');
+    .get(function (req, res) {
+        res.sendFile(process.cwd() + '/index.html');
     });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
