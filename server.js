@@ -1,5 +1,5 @@
 require('dotenv').config();
-const express = require ('express');
+const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes/quiz');
 
@@ -13,9 +13,9 @@ app.use(compression());
 app.use('/', routes);
 
 app.route('/')
-  .get(function (res) {
-    res.sendFile(process.cwd() + '/index.html');
-});
+    .get(function (res) {
+        res.sendFile(process.cwd() + '/index.html');
+    });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port);
@@ -23,6 +23,15 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 
 mongoose.connect(
     process.env.MONGODB_URI,
+    {
+        server: {
+            socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 }
+        },
+        replset: {
+            socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 }
+        }
+
+    },
     (err) => {
         if (err) return console.log("Error: ", err);
         console.log("MongoDB Connection -- Ready state is:", mongoose.connection.readyState);
