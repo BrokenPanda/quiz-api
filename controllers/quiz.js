@@ -17,16 +17,15 @@ const newQuiz = (req, res, next) => {
             const newQuiz = new Quiz({
                 id: id,
                 question: req.body.question,
-                answers: req.body.answers,
-                answer: req.body.answer
-            })
-
-            console.log("New ID is: " + id);
+                answers: req.body.answers
+            });
 
             newQuiz.save((err, data) => {
                 if (err) return res.json({ Error: err });
                 return res.json(data);
-            })
+            });
+
+            console.log(`New Quiz at ID ${id} successfully created.`);
         } else {
             return res.json({ message: `Something went wrong, please try again. ${err}` });
         }
@@ -35,43 +34,45 @@ const newQuiz = (req, res, next) => {
 
 // GET /quiz/id
 const getQuiz = (req, res, next) => {
-    let id = req.params.id;
+    const id = req.params.id;
     Quiz.findOne({ id: id }, (err, data) => {
-        if (err || !data) return res.json({ message: "Quiz does not exist." });
+        if (err || !data) return res.json({ message: `Quiz with ID ${id} does not exist.` });
         return res.json(data);
     })
 };
 
 // POST /Quiz/id
 const newQuizAtId = (req, res, next) => {
-    let id = req.params.id;
+    const id = req.params.id;
     Quiz.findOne({ id: id }, (err, data) => {
         if (!data) {
             const newQuiz = new Quiz({
                 id: id,
                 question: req.body.question,
-                answers: req.body.answers,
-                answer: req.body.answer
-            })
+                answers: req.body.answers
+            });
 
             newQuiz.save((err, data) => {
                 if (err) return res.json({ Error: err });
                 return res.json(data);
-            })
+            });
+
+            console.log(`New Quiz at ID ${id} successfully created.`);
         }
         else {
             if (err) return res.json({ message: `Something went wrong, please try again. ${err}` });
-            else return res.json({ message: "Quiz already exists." });
+            else return res.json({ message: `Quiz with ID ${id} already exists.` });
         }
     });
 };
 
 // DELETE /quiz/id
 const deleteQuiz = (req, res) => {
-    Quiz.deleteOne({ id: req.params.id }, (err, data) => {
-        if (data.deletedCount == 0) return res.json({ message: "Quiz does not exist." });
+    const id = req.params.id;
+    Quiz.deleteOne({ id: id }, (err, data) => {
+        if (data.deletedCount == 0) return res.json({ message: `Quiz with ID ${id} already exists.` });
         else if (err) return res.json(`Something went wrong, please try again. ${err}`);
-        else return res.json({ message: "Quiz deleted." });
+        else return res.json({ message: `Quiz at ID ${id} successfully deleted.` });
     });
 };
 
