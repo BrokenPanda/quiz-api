@@ -1,15 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes/quiz');
-
 const helmet = require('helmet');
 const compression = require('compression');
+const cors = require('cors');
+const routes = require('./routes/quiz');
+
+
 const app = express();
 
 app.use(express.json());
 app.use(helmet());
 app.use(compression());
+app.use(cors());
 app.use('/', routes);
 
 app.route('/')
